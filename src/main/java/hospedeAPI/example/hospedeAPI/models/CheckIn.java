@@ -25,4 +25,7 @@ public class CheckIn implements Serializable {
     @Getter @Setter
     private Boolean adicionalVeiculo;
 
+    @Getter @Setter @Column(nullable = true)
+    private Double valorTotalEstadia;
+
 }

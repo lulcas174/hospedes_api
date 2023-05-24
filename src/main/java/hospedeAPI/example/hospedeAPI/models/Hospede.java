@@ -29,12 +29,9 @@ public class Hospede implements Serializable {
     @Getter @Setter @NotNull
     private String aniversario;
 
-    @Getter @Setter @Nullable
-    private BigDecimal valorTotalEstadia;
-
-    @Getter @Setter @NotNull
-    private String dataEntrada;
-
     @Getter @Setter @NotNull
     private String dataSaida;
+
+    @Getter @Setter
+    private Boolean adicionalVeiculo;
 }

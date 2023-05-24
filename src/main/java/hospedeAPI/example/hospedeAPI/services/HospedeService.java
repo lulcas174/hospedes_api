@@ -17,13 +17,7 @@ public class HospedeService {
     @Autowired
     private HospedeRepository hospedeRepository;
 
-    @Transactional(readOnly = true)
-    public List<Hospede> findAll(){
-        return hospedeRepository.findAll();
-    }
-
     public Hospede save(Hospede hospede){
-        hospede.setValorTotalEstadia(BigDecimal.ZERO);
         return hospedeRepository.save(hospede);
     }
 
@@ -34,16 +28,35 @@ public class HospedeService {
         Hospede hospedeExisting = hospedeRepository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("Hospede não encontrado"));
 
-        hospedeExisting.setNome(hospedeUpdated.getNome());
-        hospedeExisting.setTelefone(hospedeUpdated.getTelefone());
-        hospedeExisting.setDocumento(hospedeUpdated.getDocumento());
-        hospedeExisting.setAniversario(hospedeUpdated.getAniversario());
-        hospedeExisting.setDataEntrada(hospedeUpdated.getDataEntrada());
-        hospedeExisting.setDataSaida(hospedeUpdated.getDataSaida());
+        updateHospedeFields(hospedeExisting, hospedeUpdated);
 
         return hospedeRepository.save(hospedeExisting);
     }
 
+    private void updateHospedeFields(Hospede hospedeExisting, Hospede hospedeUpdated) {
+        if (hospedeUpdated.getNome() != null) {
+            hospedeExisting.setNome(hospedeUpdated.getNome());
+        }
 
+        if (hospedeUpdated.getTelefone() != null) {
+            hospedeExisting.setTelefone(hospedeUpdated.getTelefone());
+        }
+
+        if (hospedeUpdated.getDocumento() != null) {
+            hospedeExisting.setDocumento(hospedeUpdated.getDocumento());
+        }
+
+        if (hospedeUpdated.getAniversario() != null) {
+            hospedeExisting.setAniversario(hospedeUpdated.getAniversario());
+        }
+
+        if (hospedeUpdated.getDataSaida() != null) {
+            hospedeExisting.setDataSaida(hospedeUpdated.getDataSaida());
+        }
+
+        if(hospedeUpdated.getAdicionalVeiculo() != null){
+            hospedeExisting.setAdicionalVeiculo(hospedeUpdated.getAdicionalVeiculo());
+        }
+    }
 }
 
