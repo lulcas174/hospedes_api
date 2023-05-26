@@ -1,37 +1,35 @@
 package hospedeAPI.example.hospedeAPI.models;
 
-import jakarta.annotation.Nullable;
-import jakarta.persistence.*;
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 
-@Entity
+@Entity @Getter @Setter
 public class Hospede implements Serializable {
 
-    @Id @Getter @Setter @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id  @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Getter @Setter @NotNull
+    @NotBlank
     private String nome;
 
-    @Getter @Setter @NotNull
+    @NotBlank
     private String telefone;
 
-    @Getter @Setter @NotNull
-    private String documento;
+    @NotBlank
+    private String documentoCPF;
 
-    @Getter @Setter @NotNull
-    private String aniversario;
-
-    @Getter @Setter @NotNull
+    @NotBlank
+    private String dataNascimento;
+    
+    @NotBlank
     private String dataSaida;
 
-    @Getter @Setter
     private Boolean adicionalVeiculo;
 }

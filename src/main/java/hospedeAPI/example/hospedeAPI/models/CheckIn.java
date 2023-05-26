@@ -7,25 +7,26 @@ import lombok.Setter;
 import java.io.Serializable;
 import java.util.Date;
 
-@Entity
+@Entity @Getter @Setter
 public class CheckIn implements Serializable {
 
-    @Id @Getter @Setter @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id  @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @OneToOne @Getter @Setter
+    @OneToOne
     private Hospede hospede;
 
-    @Getter @Setter
     private Date dataEntrada;
 
-    @Getter @Setter
     private Date dataSaida;
 
-    @Getter @Setter
     private Boolean adicionalVeiculo;
 
-    @Getter @Setter @Column(nullable = true)
+    @Column(nullable = true)
     private Double valorTotalEstadia;
+
+    private Double valorDaUltimaEstadia;
+
+    private Double valorTotalGastoHotel;
 
 }

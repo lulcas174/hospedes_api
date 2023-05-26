@@ -9,10 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
-import java.util.Calendar;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Service @Transactional
 public class CheckInService {
@@ -26,20 +25,76 @@ public class CheckInService {
     @Autowired
     private Utils utils;
 
-    public CheckIn createCheckIn(String documento) {
-        Hospede hospede = hospedeRepository.findByDocumento(documento);
+
+    public CheckIn createCheckIn(String documentoCPF) {
+        Hospede hospede = hospedeRepository.findByDocumentoCPF(documentoCPF);
+        Date actualDate = new Date();
+        List<CheckIn> allCheckin = checkInRepository.findAll();
+        String dataEntradaConvert;
+        String actualDateString;
+
         if (hospede == null) {
-            throw new NullPointerException("Hospede não encontrado");
+            throw new NullPointerException("Hóspede não encontrado");
+        }
+
+
+        List<CheckIn> hospedeCheckInExist = checkInRepository.findAllByHospedeDocumentoCPF(documentoCPF);
+        for(CheckIn checkIn : hospedeCheckInExist){
+            dataEntradaConvert = utils.convertDateToString(checkIn.getDataEntrada());
+            actualDateString = utils.convertDateToString(actualDate);
+            if(checkIn != null && dataEntradaConvert.equals(actualDateString)){
+                throw new IllegalArgumentException("Hóspede já fez check-in");
+            }
+        }
+
+        Double ultimoValorTotalEstadia = 0.00;
+        for(CheckIn ch : allCheckin){
+            Double valorTotalEstadia = ch.getValorTotalEstadia();
+            if (valorTotalEstadia != null) {
+                ultimoValorTotalEstadia = valorTotalEstadia;
+            }
         }
 
         CheckIn checkIn = setCheckInFields(hospede);
-
-        double totalValue = calculateTotalValue(checkIn);
+        Double totalValue = calculateTotalValue(checkIn);
+        Double valorTotalGasto = totalValue + ultimoValorTotalEstadia; ;
         checkIn.setValorTotalEstadia(totalValue);
+        checkIn.setValorDaUltimaEstadia(ultimoValorTotalEstadia);
+        checkIn.setValorTotalGastoHotel(valorTotalGasto);
+
 
         return checkInRepository.save(checkIn);
     }
 
+    public List<CheckIn> getHospedesAtHotel() {
+        List<CheckIn> hospedesAtHotel = new ArrayList<>();
+        List<CheckIn> allCheckIn = checkInRepository.findAll();
+        Date actualDate = new Date();
+
+        for (CheckIn checkIn : allCheckIn) {
+            Date dataSaidaConverted = utils.convertStringInDate(checkIn.getHospede().getDataSaida());
+            if (dataSaidaConverted.after(actualDate)) {
+                hospedesAtHotel.add(checkIn);
+            }
+        }
+
+        return hospedesAtHotel;
+    }
+
+    public List<CheckIn> getCheckoutHospedeAtHotel() {
+        List<CheckIn> hospedesAtHotel = new ArrayList<>();
+        List<CheckIn> allCheckIn = checkInRepository.findAll();
+        Date actualDate = new Date();
+
+        for (CheckIn checkIn : allCheckIn) {
+            Date dataSaidaConverted = utils.convertStringInDate(checkIn.getHospede().getDataSaida());
+            if (dataSaidaConverted.before(actualDate)) {
+                hospedesAtHotel.add(checkIn);
+            }
+        }
+
+        return hospedesAtHotel;
+    }
 
     private CheckIn setCheckInFields(Hospede hospede) {
         CheckIn checkIn = new CheckIn();
@@ -53,7 +108,8 @@ public class CheckInService {
         return checkIn;
     }
 
-    private double calculateTotalValue(CheckIn checkIn){
+
+    private double calculateTotalValue(CheckIn checkIn) {
         double valorDiariaSemana = 120.00;
         double valorDiariaFimDeSemana = 150.00;
         double totalValue = 0.0;
@@ -65,23 +121,23 @@ public class CheckInService {
             int dayOfWeek = utils.getDayOfWeek(currentDate);
 
             if (utils.isWeekday(dayOfWeek)) {
-                totalValue += calculateDailyValue(valorDiariaSemana, checkIn.getAdicionalVeiculo());
+                totalValue += calculateDailyValue(valorDiariaSemana, checkIn.getAdicionalVeiculo(), currentDate);
             } else {
-                totalValue += calculateDailyValue(valorDiariaFimDeSemana, checkIn.getAdicionalVeiculo());
+                totalValue += calculateDailyValue(valorDiariaFimDeSemana, checkIn.getAdicionalVeiculo(), currentDate);
             }
-
-            if (utils.isAfterTime(currentDate, 16, 30)) {
-                totalValue += calculateDailyValue(valorDiariaSemana, checkIn.getAdicionalVeiculo());
-            }
+//            if (dayOfWeek == Calendar.FRIDAY && utils.isAfterTime(currentDate, 16, 30)) {
+//                totalValue += calculateDailyValue(valorDiariaFimDeSemana, checkIn.getAdicionalVeiculo(), currentDate);
+//            }
         }
 
         return totalValue;
     }
 
 
-    private double calculateDailyValue(double baseValue, boolean adicionalVeiculo) {
-        double additionalFee = adicionalVeiculo ? 15.0 : 0.0;
+    private double calculateDailyValue(double baseValue, boolean adicionalVeiculo, Date currentDate) {
+        double additionalFee = adicionalVeiculo ? (utils.isWeekend(currentDate) ? 20.0 : 15.0) : 0.0;
         return baseValue + additionalFee;
     }
+
 
 }

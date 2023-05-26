@@ -2,6 +2,7 @@ package hospedeAPI.example.hospedeAPI.utils;
 
 import org.springframework.stereotype.Component;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -17,6 +18,12 @@ public class Utils {
         calendar.set(ano, mes, dia);
         return calendar.getTime();
     }
+
+    public static String convertDateToString(Date date) {
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+        return formatter.format(date);
+    }
+
 
     public int calculateDays(Date startDate, Date endDate) {
         long difference = endDate.getTime() - startDate.getTime();
@@ -40,23 +47,14 @@ public class Utils {
     }
 
 
-    public boolean isAfterTime(Date date, int hour, int minute) {
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(date);
-        int currentHour = calendar.get(Calendar.HOUR_OF_DAY);
-        int currentMinute = calendar.get(Calendar.MINUTE);
-
-        if (currentHour > hour) {
-            return true;
-        } else if (currentHour == hour && currentMinute > minute) {
-            return true;
-        }
-
-        return false;
-    }
-
     public boolean isWeekday(int dayOfWeek) {
         return dayOfWeek >= Calendar.MONDAY && dayOfWeek <= Calendar.FRIDAY;
     }
-
+    
+    public boolean isWeekend(Date date) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
+        return dayOfWeek == Calendar.SATURDAY || dayOfWeek == Calendar.SUNDAY;
+    }
 }
