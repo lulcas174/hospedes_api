@@ -15,6 +15,6 @@
 - Configure sua .env com os valores mostrados no .env-example
 - Configure o application propeties para refletir os valores do seu .env
 - Abra o terminal na pasta raiz do projeto
-- Execute o comando `docker-compose up -d`
-- Configure o que precisa configurar de estrutura do projeto (jdk e afins)
+- Execute o comando `docker-compose up`
+- Configure a estrutura do projeto, JDK versão 17 e java versão 17
 - Inicie o projeto
