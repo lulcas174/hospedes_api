@@ -7,15 +7,17 @@ Todos os endpoints seguirão o padrão: api/v1/{checkin_ou_hospedes}/{operacao}
 # Endpoints de hospedes
 
 ## POST /criar
-   - Nem todos os campos são obrigatórios
-    {
-        "nome": "string",
-        "documentoCPF": "string",
-        "telefone": "string",
-        "dataNascimento": "string"
-        "dataSaida": "string"
-        "adicionalVeiculo": "boolean"
-    }
+    Para criar um novo hospede.
+    
+        {
+            "nome": "string",
+            "documentoCPF": "string",
+            "telefone": "string",
+            "dataNascimento": "string"
+            "dataSaida": "string"
+            "adicionalVeiculo": "boolean"
+       }
+    
 
 ## GET /listar
     Para listar os hospedes você não precisa de body, apenas acessar o endpoint /listar e você tera o JSON esperado de:
