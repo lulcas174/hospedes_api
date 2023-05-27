@@ -2,39 +2,42 @@
 <s>eu tentei documentar via swagger mas eu tive muitos problemas~ 😢</s>
 
 
-Todos os endpoints seguirão o padrão: api/v1/{checkin_ou_hospede}/{endpoint}
+Todos os endpoints seguirão o padrão: api/v1/{checkin_ou_hospedes}/{operacao}
 
 # Endpoints de hospedes
 
 ## POST /criar
+   - Nem todos os campos são obrigatórios
     {
         "nome": "string",
         "documentoCPF": "string",
         "telefone": "string",
-        "dataDeNascimento": "string"
+        "dataNascimento": "string"
         "dataSaida": "string"
         "adicionalVeiculo": "boolean"
     }
 
 ## GET /listar
+    Para listar os hospedes você não precisa de body, apenas acessar o endpoint /listar e você tera o JSON esperado de:
     [
         {
-            "id": "string",
             "nome": "string",
             "documentoCPF": "string",
             "telefone": "string",
-            "dataDeNascimento": "string"
+            "dataNascimento": "string"
             "dataSaida": "string"
             "adicionalVeiculo": "boolean"
-        }
-    ]
+       }
+    ] 
+
+
 
 ## PUT /atualizar/{id}
     {
         "nome": "string",
         "documentoCPF": "string",
         "telefone": "string",
-        "dataDeNascimento": "string"
+        "dataNascimento": "string"
         "dataSaida": "string"
         "adicionalVeiculo": "boolean"
     }
@@ -48,14 +51,9 @@ Todos os endpoints seguirão o padrão: api/v1/{checkin_ou_hospede}/{endpoint}
 # Endpoints de check-in
 
 ## POST /realizar-novo-checkin
+   - Para realizar um checkin é necessário apenas enviar o documentoCPF da pessoa.
     {
-        "hospedeId": "string",
-        "dataEntrada": "string",
-        "dataSaida": "string",
-        "adicionalVeiculo": "boolean",
-        "valorTotalEstadia": "double",
-        "valorDaUltimaEstadia": "double",
-        "valorTotalGastoHotel": "double"
+       "documentoCPF": "string"
     }
 
 ## GET /hospedes-no-hotel

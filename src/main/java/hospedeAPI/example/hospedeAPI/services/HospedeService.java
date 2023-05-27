@@ -23,11 +23,16 @@ public class HospedeService {
     private HospedeRepository hospedeRepository;
 
     public Hospede save(Hospede hospede){
-        String telefoneNoSpecialCharacters = hospede.getTelefone().replaceAll("[^0-9]", "");
-        hospede.setTelefone(telefoneNoSpecialCharacters);
+        if(hospede.getTelefone() != null){
+            String telefoneNoSpecialCharacters = hospede.getTelefone().replaceAll("[^0-9]", "");
+            hospede.setTelefone(telefoneNoSpecialCharacters);
+        }
 
-        String cpf = hospede.getDocumentoCPF().replaceAll("[^0-9]", "");
-        hospede.setDocumentoCPF(cpf);
+        if(hospede.getDocumentoCPF() != null) {
+            String cpf = hospede.getDocumentoCPF().replaceAll("[^0-9]", "");
+            hospede.setDocumentoCPF(cpf);
+        }
+
 
         if (hospedeRepository.existsByDocumentoCPF(hospede.getDocumentoCPF())) {
             throw new HospedeExistentingException("Hospede já cadastrado");
@@ -89,19 +94,26 @@ public class HospedeService {
     private Boolean validateHospedFields(Hospede hospede){
         if(hospede.getDocumentoCPF() != null) {
             validateCPF(hospede.getDocumentoCPF());
+        } else {
+            throw new InvalidCPFException("CPF não enviado.");
         }
 
-        if(hospede.getDataNascimento() != null) {
+        if (hospede.getDataNascimento() != null) {
             validateBirthdayDate(hospede.getDataNascimento());
-
+        } else {
+            throw new InvalidDateException("Data de nascimento não enviada. Utilize dd/mm/yyyy");
         }
 
         if(hospede.getDataSaida() != null){
             validateCheckoutDate(hospede.getDataSaida());
+        } else {
+            throw new InvalidDateException("Data de checkout não enviada. Utilize dd/mm/yyyy");
         }
 
         if(hospede.getTelefone() != null){
             validateTelefone(hospede.getTelefone());
+        } else {
+            throw new InvalidTelefoneFormatException("Telefone não enviado.");
         }
 
         return true;

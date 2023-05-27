@@ -19,7 +19,7 @@ public class CheckInController {
     @Autowired
     private CheckInService checkInService;
 
-    @PostMapping("/realizar-novo-checkin")
+    @PostMapping("/realizar-checkin")
     public CheckIn criarCheckIn(@RequestBody String reqDocument){
         try{
             ObjectMapper objectMapper = new ObjectMapper();

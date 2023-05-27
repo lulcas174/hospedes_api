@@ -1,5 +1,5 @@
 DB_NAME=<nome_do_seu_banco>
 DB_USER=<seu_usuario>
 DB_PASSWORD=<sua_senha>
-PGADMIN_DEFAULT_EMAIL=<email_de_acesso_pgadmin>
+PGADMIN_DEFAULT_EMAIL=<email_de_acesso_pgadmin> // pode ser qualquer email, não tem validação
 PGADMIN_DEFAULT_PASSWORD=<senha_de_acesso_pgadmin>

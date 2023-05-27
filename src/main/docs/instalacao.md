@@ -8,16 +8,12 @@
 - A versão do JDK é a 17
 - Versão do java é a 17
 
-### Como rodar? (pelo terminal)
-- Clone o repositório
-- Abra o terminal na pasta raiz do projeto
-- Execute o comando `docker-compose up -d`
-- Execute o comando `./mvnw clean install`
-- Execute o comando `./mvnw spring-boot:run`
 
 ### Como rodar?(Pelo intelij Ou outra IDE)
 - Clone o repositório
 - Abra o projeto na sua IDE
+- Configure sua .env com os valores mostrados no .env-example
+- Configure o application propeties para refletir os valores do seu .env
 - Abra o terminal na pasta raiz do projeto
 - Execute o comando `docker-compose up -d`
 - Configure o que precisa configurar de estrutura do projeto (jdk e afins)
