@@ -6,6 +6,7 @@
 - [Java 11](https://www.oracle.com/br/java/technologies/javase-jdk11-downloads.html)
 - [Maven](https://maven.apache.org/download.cgi)
 - A versão do JDK é a 17
+- Versão do java é a 17
 
 ### Como rodar? (pelo terminal)
 - Clone o repositório
